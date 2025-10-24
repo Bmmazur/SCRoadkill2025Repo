@@ -17,5 +17,9 @@ public class RKDestroyer : MonoBehaviour
             Destroy(gameObject);
             rkSpawner.LevelClear();
         }
+        else if(collision.gameObject.tag == "car")
+        {
+            Debug.Log("squelch");
+        }
     }
 }

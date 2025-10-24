@@ -6,8 +6,8 @@ using TMPro;
 public class RKSpawner : MonoBehaviour
 {
     public GameObject[] roadkill;
-    public float spawnRangeX = 6.0f;
-    public float spawnRangeY = 10.0f;
+    public float spawnRangeX = 18.0f;
+    public float spawnRangeY = 6.0f;
     public GameObject rkPrefab;
     public int spawnQuota = 5;
     public int rkCount = 0;
@@ -38,10 +38,12 @@ public class RKSpawner : MonoBehaviour
         int roadkillList = Random.Range(0, roadkill.Length);
         float spawnPointX = Random.Range(-spawnRangeX, spawnRangeX);
         float spawnPointY = Random.Range(-spawnRangeY, spawnRangeY);
+        int rotationRange = Random.Range(0, 360);
 
         Vector2 spawnPosition = new Vector2(spawnPointX, spawnPointY);
+        Quaternion spawnRotation = new Quaternion(transform.rotation.x, transform.rotation.y, rotationRange, 1);
 
-        rkPrefab = Instantiate(roadkill[roadkillList], spawnPosition, Quaternion.identity);
+        rkPrefab = Instantiate(roadkill[roadkillList], spawnPosition, spawnRotation);
     }
     public void LevelClear()
     {

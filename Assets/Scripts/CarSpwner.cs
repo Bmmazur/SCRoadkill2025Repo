@@ -6,7 +6,6 @@ public class CarSpwner : MonoBehaviour
     private int[] carChoice = new int[2];
 
 
-
     void Start()
     {
         float startDelay = Random.Range(5, 15);
@@ -21,7 +20,7 @@ public class CarSpwner : MonoBehaviour
         int carPosition = Random.Range(0, carChoice.Length);
         int carIndex = carChoice[carPosition];
         int carList = Random.Range(0, carObjects.Length);
-        Vector2 spawnPosition = new Vector2(transform.position.x, carIndex);
+        Vector2 spawnPosition = new Vector2(carIndex, transform.position.y);
 
         Instantiate(carObjects[carList], spawnPosition, Quaternion.identity);
     }

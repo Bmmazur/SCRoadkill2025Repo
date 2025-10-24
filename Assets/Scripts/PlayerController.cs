@@ -11,10 +11,11 @@ public class PlayerController : MonoBehaviour
     Vector2 moveDirection = Vector2.zero;
     
 
-    public float leftRange = -9.0f;
-    public float rightRange = 9.0f;
-    public float botRange = -13.0f;
-    public float topRange = 13.0f;
+    public float leftRange = -19.0f;
+    public float rightRange = 19.0f;
+    public float botRange = -9.0f;
+    public float topRange = 9.0f;
+    public float startPos = 8.5f;
     public float moveSpeed = 5.0f;
     public float sprintSpeed = 7.0f;    
     public float slowSpeed = 3.0f;
@@ -35,6 +36,9 @@ public class PlayerController : MonoBehaviour
     public GameObject playerRK;
     private GameObject rkObject;
     public MenuManager menuManager;
+
+    [SerializeField] private Animator playerAnimtor;
+    [SerializeField] AudioManager audioManager;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -87,12 +91,15 @@ public class PlayerController : MonoBehaviour
         if (moveDirection.magnitude > 0.01f)
         {
             isMoving = true;
+            playerAnimtor.SetBool("animWalk", true);
             lastMoveDirection = moveDirection;
             Vector3 vector3 = Vector3.left * lastMoveDirection.x + Vector3.down * lastMoveDirection.y;
             rotPoint.rotation = Quaternion.LookRotation(Vector3.forward, vector3);
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, vector3);
         }
         else if (moveDirection.magnitude == 0)
         {
+            playerAnimtor.SetBool("animWalk", false);
             isMoving = false;
         }
     }
@@ -103,28 +110,32 @@ public class PlayerController : MonoBehaviour
         if(!isSprinting && !shovelFull)
         {
             rb.linearVelocity = new Vector3(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed, transform.position.z);
+            //audioManager.PlaySFX(audioManager.walk);
         }
         else if(isSprinting)
         {
             rb.linearVelocity = new Vector3(moveDirection.x * sprintSpeed, moveDirection.y * sprintSpeed, transform.position.z);
+            //audioManager.PlaySFX(audioManager.sprint);
         }        
         else if(shovelFull)
         {
             rb.linearVelocity = new Vector3(moveDirection.x * slowSpeed, moveDirection.y * slowSpeed, transform.position.z);
+            //audioManager.PlaySFX(audioManager.walk);
         }
 
         if (shovelFull && rkObject != null)
         {
             rkObject.transform.position = shovelPoint.position;
             rkObject.transform.SetParent(transform);
-            shovelSprite.GetComponent<SpriteRenderer>().enabled = false;
-            rkSprite.GetComponent<SpriteRenderer>().enabled = true;
+            //shovelSprite.GetComponent<SpriteRenderer>().enabled = false;
+            //rkSprite.GetComponent<SpriteRenderer>().enabled = true;
         }
         else if (rkObject == null)
         {
             shovelFull = false;
-            shovelSprite.GetComponent<SpriteRenderer>().enabled = true;
-            rkSprite.GetComponent<SpriteRenderer>().enabled = false;
+            //playerAnimtor.SetTrigger("animShovel");
+            //shovelSprite.GetComponent<SpriteRenderer>().enabled = true;
+            //rkSprite.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
@@ -148,6 +159,7 @@ public class PlayerController : MonoBehaviour
         else if(!shovelFull)
         {
             isSprinting = true;
+            playerAnimtor.SetBool("animSprint", true);
             Debug.Log("UR Sprinting");
         }
     }
@@ -160,11 +172,13 @@ public class PlayerController : MonoBehaviour
         else if (!shovelFull)
         {
             isSprinting = false;
+            playerAnimtor.SetBool("animSprint", false);
             Debug.Log("Stop Sprinting");
         }
     }
     private void SprintFailed()
     {
+        //Play animation for sprint failing
         Debug.Log("Sprint Failed");
     }
     private void UseShovel()
@@ -181,25 +195,25 @@ public class PlayerController : MonoBehaviour
                 {
                     Debug.Log("picking Up");
                     shovelFull = true;
+                    playerAnimtor.SetTrigger("animShovel");
+                    audioManager.PlaySFX(audioManager.shovelHit);
                     rkObject = hitInfo.collider.gameObject;
                     rkObject.transform.position = shovelPoint.position;
                     rkObject.transform.SetParent(transform);
                 }
             }
-            else if (hitInfo.collider != null && hitInfo.collider.gameObject.layer == missIndex && !shovelFull)
+            else if (hitInfo.collider == null )
             {
                 Debug.Log("missed");
+                playerAnimtor.SetTrigger("animShovel");
+                audioManager.PlaySFX(audioManager.shovelMiss);
             }
 
         }
-        else if (shovelFull && transform.position.x < 7 || transform.position.x > -7)
+        else if (shovelFull)
         {
+            //Play animation for when shovel is full but you can't drop the roadkill
             Debug.Log("Shovel is full");
-        }
-        else if (shovelFull && transform.position.x > 7 || transform.position.x < -7)
-        {
-            Debug.Log("Empty your shovel");
-            return;
         }
     }
     private void OnDrawGizmosSelected()
@@ -232,7 +246,7 @@ public class PlayerController : MonoBehaviour
     }
     public void RespawnPlayer()
     {
-        transform.position = new Vector2(-9, 0);
+        transform.position = new Vector2(0, startPos);
         gameObject.SetActive(true);
     }
 }

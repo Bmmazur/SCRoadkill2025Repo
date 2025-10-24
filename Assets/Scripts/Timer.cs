@@ -36,6 +36,7 @@ public class Timer : MonoBehaviour
     }
     public void ResetTimer()
     {
+        enabled = true;
         currentTime = 60;
         timesUp = false;
     }

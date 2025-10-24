@@ -20,7 +20,7 @@ public class BossSpawner : MonoBehaviour
     {
         int carPosition = Random.Range(0, carChoice.Length);
         int carIndex = carChoice[carPosition];
-        Vector2 bossPosition = new Vector2(playerPosition.position.x, carIndex);
+        Vector2 bossPosition = new Vector2(carIndex, playerPosition.position.y);
         if (timer.timesUp == true)
         {
             Instantiate(bossObject, bossPosition, Quaternion.identity);
