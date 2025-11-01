@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8968153825360155615}
   - component: {fileID: 3160702421359254993}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CarLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Intensity: 5
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 0000000087caf681c92769baf99f2eaf
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -238,7 +238,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBoss: 0
-  carLight: {fileID: 3160702421359254993}
 --- !u!50 &3364429084417918039
 Rigidbody2D:
   serializedVersion: 5

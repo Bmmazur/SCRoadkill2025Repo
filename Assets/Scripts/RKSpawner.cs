@@ -31,6 +31,7 @@ public class RKSpawner : MonoBehaviour
             SpawnRoadkill();
             rkCount++;
         }
+        timer.IncreaseTimer();
         timer.ResetTimer();
     }
     public void SpawnRoadkill()

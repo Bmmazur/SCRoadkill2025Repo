@@ -4,7 +4,8 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    public float currentTime;
+    public float currentTime = 60f;
+    public float addTime = -10f;
     public bool countDown;
     public bool hasLimit;
     public bool timesUp = false;
@@ -34,10 +35,14 @@ public class Timer : MonoBehaviour
     {
         timerText.text = currentTime.ToString("0");
     }
+    public void IncreaseTimer()
+    {
+        addTime += 10f;
+    }
     public void ResetTimer()
     {
         enabled = true;
-        currentTime = 60;
+        currentTime = 60 + addTime;
         timesUp = false;
     }
 }
