@@ -5,7 +5,6 @@ public class CarSpwner : MonoBehaviour
     public GameObject[] carObjects;
     private int[] carChoice = new int[2];
 
-
     void Start()
     {
         float startDelay = Random.Range(5, 15);

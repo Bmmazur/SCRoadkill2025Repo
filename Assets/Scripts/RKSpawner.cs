@@ -38,7 +38,7 @@ public class RKSpawner : MonoBehaviour
         int roadkillList = Random.Range(0, roadkill.Length);
         float spawnPointX = Random.Range(-spawnRangeX, spawnRangeX);
         float spawnPointY = Random.Range(-spawnRangeY, spawnRangeY);
-        int rotationRange = Random.Range(0, 360);
+        float rotationRange = Random.Range(0.1f, 1.0f);
 
         Vector2 spawnPosition = new Vector2(spawnPointX, spawnPointY);
         Quaternion spawnRotation = new Quaternion(transform.rotation.x, transform.rotation.y, rotationRange, 1);

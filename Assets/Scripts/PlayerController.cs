@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,8 +21,13 @@ public class PlayerController : MonoBehaviour
     public float sprintSpeed = 7.0f;    
     public float slowSpeed = 3.0f;
     public bool isSprinting;
-    //public float sprintMeter = 100;
 
+    public float stamina, maxStamina;
+    public float sprintCost;
+    public float chargeRate = 15f;
+    public GameObject sprintMeter;
+    private Coroutine sprintRecharge;
+    
     public bool shovelFull = false;
     public bool shovelCollide = false;
     public Transform shovelPoint;
@@ -73,20 +79,6 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(transform.position.x, topRange, transform.position.z);
         }
 
-        //This empties the sprint meter when sprinting and fills the sprint meter when not sprinting
-        /*if (isSprinting && sprintMeter >= 0)
-        {
-            sprintMeter--;
-        }
-        else if (!isSprinting && sprintMeter <= 99)
-        {
-            sprintMeter++;
-        }
-        if(sprintMeter <= 0)
-        {
-            isSprinting = false;
-        }*/
-
         //This sets the shovel to the direction the player is moving
         if (moveDirection.magnitude > 0.01f)
         {
@@ -102,27 +94,51 @@ public class PlayerController : MonoBehaviour
             playerAnimtor.SetBool("animWalk", false);
             isMoving = false;
         }
+        
+        if(stamina < 25)
+        {
+            sprintMeter.SetActive(true);
+        }
+        else if(stamina > 25)
+        {
+            sprintMeter.SetActive(false);
+        }
     }
 
     private void FixedUpdate()
     {
         //Moves the player at varying speeds depending on their current state
-        if(!isSprinting && !shovelFull)
+        if (isSprinting)
+        {
+            rb.linearVelocity = new Vector3(moveDirection.x * sprintSpeed, moveDirection.y * sprintSpeed, transform.position.z);
+             if (moveDirection.x != 0 || moveDirection.y != 0)
+            {
+                stamina -= sprintCost * Time.deltaTime;
+                playerAnimtor.SetBool("animSprint", true);
+                if (stamina <= 0)
+                {
+                    stamina = 0;
+                    playerAnimtor.SetBool("animSprint", false);
+                    isSprinting = false;
+                }
+                RunCoroutine();
+            }
+            //audioManager.PlaySFX(audioManager.sprint);
+
+        }
+        else if (!isSprinting && !shovelFull)
         {
             rb.linearVelocity = new Vector3(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed, transform.position.z);
             //audioManager.PlaySFX(audioManager.walk);
         }
-        else if(isSprinting)
-        {
-            rb.linearVelocity = new Vector3(moveDirection.x * sprintSpeed, moveDirection.y * sprintSpeed, transform.position.z);
-            //audioManager.PlaySFX(audioManager.sprint);
-        }        
+
         else if(shovelFull)
         {
             rb.linearVelocity = new Vector3(moveDirection.x * slowSpeed, moveDirection.y * slowSpeed, transform.position.z);
             //audioManager.PlaySFX(audioManager.walk);
         }
 
+        //Sets the position of the roadkill when held by the player
         if (shovelFull && rkObject != null)
         {
             rkObject.transform.position = shovelPoint.position;
@@ -156,11 +172,14 @@ public class PlayerController : MonoBehaviour
         {
             SprintFailed();
         }
-        else if(!shovelFull)
+        else if(!shovelFull && stamina > 0)
         {
             isSprinting = true;
-            playerAnimtor.SetBool("animSprint", true);
             Debug.Log("UR Sprinting");
+        }
+        else if(stamina <= 0)
+        {
+            isSprinting = false;
         }
     }
     private void SprintRelease()
@@ -248,5 +267,23 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = new Vector2(0, startPos);
         gameObject.SetActive(true);
+    }
+
+    public void RunCoroutine()
+    {
+        if (sprintRecharge != null) StopCoroutine(sprintRecharge);
+        sprintRecharge = StartCoroutine(RechargeSprint());
+    }
+
+    private IEnumerator RechargeSprint()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while(stamina < maxStamina)
+        {
+            stamina += chargeRate / 10f;
+            if (stamina >= maxStamina) stamina = maxStamina;
+            yield return new WaitForSeconds(.1f);
+        }
     }
 }

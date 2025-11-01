@@ -6,7 +6,7 @@ public class LightController : MonoBehaviour
     public Light2D globalLight;
     public Light2D playerLight;
     private float plValue = 0f;
-    private float glValue = 1f;
+    private float glValue = 2.1f;
     
     // Update is called once per frame
     void Update()
@@ -19,15 +19,15 @@ public class LightController : MonoBehaviour
     {
         if(glValue >= 0)
         {
-            glValue -= 0.2f;
+            glValue -= 0.7f;
         }
         else
         {
             return;
         }
-        if(plValue <= 2)
+        if(plValue <= 2.1)
         {
-            plValue += 0.5f;
+            plValue += 0.7f;
         }
         else
         {
@@ -38,6 +38,6 @@ public class LightController : MonoBehaviour
     public void ResetLights()
     {
         plValue = 0f;
-        glValue = 1f;
+        glValue = 2.1f;
     }
 }

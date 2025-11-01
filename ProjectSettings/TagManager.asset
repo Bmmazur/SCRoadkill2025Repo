@@ -43,5 +43,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Gore
+    uniqueID: 2939068409
+    locked: 0
+  - name: Player
+    uniqueID: 3127453641
+    locked: 0
+  - name: Roadkill
+    uniqueID: 2180434567
+    locked: 0
   m_RenderingLayers:
   - Default

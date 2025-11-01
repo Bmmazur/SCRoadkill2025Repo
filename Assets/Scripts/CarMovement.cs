@@ -1,14 +1,10 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class CarMovement : MonoBehaviour
 {
     private float neutral = 0f;
     private bool positiveX;
     public bool isBoss = false;
-
-    public Light2D carLight;
-    private float clValue = 0f;
     private void Awake()
     {
 
@@ -27,7 +23,6 @@ public class CarMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        carLight.intensity = clValue;
         float sideBound = 25.0f;
 
         float speed = Random.Range(10, 15);
@@ -60,21 +55,5 @@ public class CarMovement : MonoBehaviour
                 transform.Translate(Vector2.left * Time.deltaTime * bossSpeed);
             }
         }
-    }
-
-    public void ChangeCarLights()
-    {
-        if(clValue <= 20)
-        {
-            clValue += 5f;
-        }
-        else
-        {
-            return;
-        }
-    }
-    public void ResetLights()
-    {
-        clValue = 0;
     }
 }
