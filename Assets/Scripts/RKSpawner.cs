@@ -6,7 +6,7 @@ using TMPro;
 public class RKSpawner : MonoBehaviour
 {
     public GameObject[] roadkill;
-    public float spawnRangeX = 18.0f;
+    public float spawnRangeX = 15.0f;
     public float spawnRangeY = 6.0f;
     public GameObject rkPrefab;
     public int spawnQuota = 5;
