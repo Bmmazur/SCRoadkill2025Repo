@@ -3608,6 +3608,7 @@ MonoBehaviour:
   rkSprite: {fileID: 1197243103}
   playerRK: {fileID: 8981850519290737179, guid: 85511e1a9ef05f94d8c6e6beacca529b, type: 3}
   menuManager: {fileID: 2122833827}
+  playerRend: {fileID: 812555751}
   playerAnimtor: {fileID: 812555753}
   audioManager: {fileID: 639856816}
 --- !u!212 &812555751

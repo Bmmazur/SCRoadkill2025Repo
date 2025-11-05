@@ -46,10 +46,10 @@ TagManager:
   - name: Gore
     uniqueID: 2939068409
     locked: 0
-  - name: Player
+  - name: PlayerRoadkill
     uniqueID: 3127453641
     locked: 0
-  - name: Roadkill
+  - name: Cars
     uniqueID: 2180434567
     locked: 0
   m_RenderingLayers:

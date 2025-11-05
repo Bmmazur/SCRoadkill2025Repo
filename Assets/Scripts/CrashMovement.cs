@@ -4,6 +4,7 @@ public class CrashMovement : MonoBehaviour
 {
     public bool positiveY;
     public bool isCrashing = true;
+    public bool bloodSpawned = false;
     public RKSpawner rkSpawner;
     public GameObject bloodSprite;
     private void Awake()
@@ -30,7 +31,11 @@ public class CrashMovement : MonoBehaviour
         {
             isCrashing = false;
             Vector2 bloodPosition = new Vector2(transform.position.x, transform.position.y);
-            Instantiate(bloodSprite, bloodPosition, Quaternion.identity);
+            if (!bloodSpawned)
+            {
+                Instantiate(bloodSprite, bloodPosition, Quaternion.identity);
+                bloodSpawned = true;
+            }
         }
 
         if (positiveY && isCrashing)
