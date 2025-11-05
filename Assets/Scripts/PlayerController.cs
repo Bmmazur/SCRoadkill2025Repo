@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public GameObject playerRK;
     private GameObject rkObject;
     public MenuManager menuManager;
+    public SpriteRenderer playerRend;
 
     [SerializeField] private Animator playerAnimtor;
     [SerializeField] AudioManager audioManager;
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour
         else if (rkObject == null)
         {
             shovelFull = false;
+            playerRend.sortingOrder = 2;
             //playerAnimtor.SetTrigger("animShovel");
             //shovelSprite.GetComponent<SpriteRenderer>().enabled = true;
             //rkSprite.GetComponent<SpriteRenderer>().enabled = false;
@@ -216,6 +218,7 @@ public class PlayerController : MonoBehaviour
                     shovelFull = true;
                     playerAnimtor.SetTrigger("animShovel");
                     audioManager.PlaySFX(audioManager.shovelHit);
+                    playerRend.sortingOrder = 0;
                     rkObject = hitInfo.collider.gameObject;
                     rkObject.transform.position = shovelPoint.position;
                     rkObject.transform.SetParent(transform);
