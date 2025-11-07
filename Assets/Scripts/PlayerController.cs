@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
         else if (moveDirection.magnitude == 0)
         {
             playerAnimtor.SetBool("animWalk", false);
+            playerAnimtor.SetBool("animSprint", false);
             isMoving = false;
         }
         
@@ -174,13 +175,14 @@ public class PlayerController : MonoBehaviour
         {
             SprintFailed();
         }
-        else if(!shovelFull && stamina > 0)
+        else if(!shovelFull && stamina > 0 && isMoving == true)
         {
             isSprinting = true;
             Debug.Log("UR Sprinting");
         }
-        else if(stamina <= 0)
+        else if(stamina <= 0 || !isMoving)
         {
+            playerAnimtor.SetBool("animSprint", false);
             isSprinting = false;
         }
     }
@@ -269,6 +271,7 @@ public class PlayerController : MonoBehaviour
     public void RespawnPlayer()
     {
         transform.position = new Vector2(0, startPos);
+        stamina = maxStamina;
         gameObject.SetActive(true);
     }
 
